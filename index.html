@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>mini Chat NodeJS</title>
+</head>
+<body>
+    <h1>Chat en temps reel !</h1>
+
+    <p>
+        <form method="post" action="/">
+            <input type="text" id="msg" placeholder="Entrez votre message ...">
+            <input type="submit" value="Envoyer" onclick="btn()">
+        </form>
+    </p>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        var socket = io.connect('http://localhost:8080');
+        var pseudo = prompt('Quel est votre pseudo ?');
+        socket.emit('nouveau', pseudo);
+        socket.on('connexionEtablie', (msg)=>{
+            alert(msg);
+        });
+        socket.on('messageBrodcast', (msg)=>{
+            document.write(msg);
+        })
+        function btn() {
+            socket.emit('message', document.getElementById(msg));
+        }
+    </script>
+</body>
+</html>
